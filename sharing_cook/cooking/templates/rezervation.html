@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rezervation</title>
+     {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/rezervation.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/bootstrap.min.css' %}">
+</head>
+<body>
+<p><a href="/index/" >Return to main page</a></p>
+	<div id="booking" class="section">
+		<div class="section-center">
+			<div class="container">
+				<div class="row">
+					<div class="booking-form">
+						<form>
+							<div class="row no-margin">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Date visit</span>
+										<input class="form-control" type="date" required>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Time</span>
+										<input class="form-control" type="time" required>
+									</div>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Adults (18+)</span>
+										<select class="form-control">
+											<option>1</option>
+											<option>2</option>
+											<option>3</option>
+										</select>
+										<span class="select-arrow"></span>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Children (0-17)</span>
+										<select class="form-control">
+											<option>0</option>
+											<option>1</option>
+											<option>2</option>
+										</select>
+										<span class="select-arrow"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="form-label">Meal Type</span>
+								<select class="form-control" required>
+									<option value="" selected hidden>Select meal type</option>
+									<option>Breakfest</option>
+									<option>Lunch</option>
+									<option>Dinner</option>
+									<option>Tea</option>
+									<option>Supper</option>
+								</select>
+								<span class="select-arrow"></span>
+							</div>
+							<div class="form-group">
+								<span class="form-label">Email</span>
+								<input class="form-control" type="email" placeholder="Enter your email">
+							</div>
+							<div class="form-group">
+								<span class="form-label">Phone</span>
+								<input class="form-control" type="tel" placeholder="Enter your phone number">
+							</div>
+							<div class="form-group" data-validate="Message is required">
+							<span class="form-label">Your message</span>
+                            <textarea rows="50" cols="50" class="form-control" name="message" placeholder="Your Message"></textarea>
+                            <span class="focus-input3"></span>
+                            </div>
+							<div class="form-btn" >
+								<button class="submit-btn">Make Rezervation</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

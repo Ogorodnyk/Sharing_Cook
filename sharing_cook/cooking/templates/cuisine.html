@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cuisine</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<ul>
+<li><a href="/index/" >Return to main page</a></li>
+<li><a href="/meet/">Meet new people</a></li>
+<li><a href="/waste_food/">No waste food</a></li>
+<li><a href="/contact/">Contact</a></li>
+</ul>
+{% for cuisine in cuisines %}
+<a href="#" class="badge badge-info">
+
+{{cuisine.name}}
+</a>
+{% endfor %}
+
+<br>
+<img src="{% static "images/food.jpeg" %}" alt="My image">
+</body>
+</html>

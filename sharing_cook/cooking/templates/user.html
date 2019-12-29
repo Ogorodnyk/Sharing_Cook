@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User</title>
+  <style>
+.your-class button{
+  float:left;
+}
+</style>
+   {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<ul>
+<li><a href="/index/" >Return to main page</a></li>
+<li><a href="/meet/">Return to list of people</a></li>
+<li><a href="/cuisine/">Learn about new cuisine</a></li>
+<li><a href="/waste_food/">No waste food</a></li>
+<li><a href="/contact/">Contact</a></li>
+</ul>
+
+Name: {{user.name}}<br>
+Surname: {{user.last_name}}<br>
+Date of Birth: {{user.birth_date}}<br>
+Gender: {{ user.get_gender_display }}<br>
+Languages: {{ user.languages}}<br>
+
+<div class="your-class">
+<form method="get" action="/message">
+<button type="submit" class="btn btn-primary">Send a message</button>
+</form>
+<form method="get" action="/rezervation">
+<button type="submit" class="btn btn-warning">Make rezervation</button>
+</form>
+<form method="get" action="/pay">
+<button type="submit" class="btn btn-success">Pay for dinner</button>
+</div>
+</form>
+</body>
+</html>
