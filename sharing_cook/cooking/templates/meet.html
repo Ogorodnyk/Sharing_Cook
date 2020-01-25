@@ -4,11 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <title>New People</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 </head>
 <body>
 
 <ul>
-<li><a href="/index/" class="help">Return to main page</a></li>
+<li><a href="/" class="help">Return to main page</a></li>
 <li><a href="/cuisine/">Learn about new cuisine</a></li>
 <li><a href="/waste_food/">No waste food</a></li>
 <li><a href="/contact/">Contact</a></li>
@@ -20,13 +22,11 @@
 <br>
 <br>
 All registred users {{count}}
-<hr>
+<hr style="background-color: black">
 {% for user in users %}
-    <p>
-
-       <a  href="/user_details/{{ user.id }}">{{ user.name }} {{user.last_name}} </a>
-         {{ user.get_gender_display }}.    Age: {{ user.age }} Year  Languages: {{ user.languages}} <a   href="/edit_user/{{user.id}}">edit</a><br>
-    </p>
+<p>
+{{user.username}} - {{user.last_name}} - {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - {{user.age}}
+</p>
 {% endfor %}
 </body>
 </html>

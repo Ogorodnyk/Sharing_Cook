@@ -1,0 +1,16 @@
+{% block content %}
+{% if user.is_authenticated %}
+Hello {{user.username}} you already login
+{% else %}
+    <h1>Log-in</h1>
+    <p>Please, use the following form to log-in:</p>
+    <form action="." method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Log-in"></p>
+    </form>
+{% endif %}
+{% endblock %}
+<h1><a href="/" >Return to main page</a></h1>
+<h1><a href="/logout/" >Log_out</a></h1>
+

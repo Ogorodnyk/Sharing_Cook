@@ -1,0 +1,18 @@
+
+{% block content %}
+<h2>Users: </h2>
+<ol style="1">
+{% for custom in customs %}
+<li>
+Name: {{custom.username}} <br>
+Last_Name: {{custom.last_name}}<br>
+Gender: {{ custom.get_gender_display }}<br>
+Languages: {{ custom.languages }}<br>
+Birthday: {{ custom.birth_date }}<br>
+Age: {{ custom.age }}<br>
+</li>
+{% endfor %}
+
+
+</ol>
+{%  endblock %}

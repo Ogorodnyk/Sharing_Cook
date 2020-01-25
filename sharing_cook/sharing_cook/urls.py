@@ -20,7 +20,8 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', index),
+# path('', SchoolView.as_view(), name="index"),
+    path('',IndexView.as_view(), name="index"),
     path('cuisine/', cuisine),
     path('waste_food/', waste_food),
     path('meet/', meet),
@@ -30,4 +31,8 @@ urlpatterns = [
     path('rezervation/', rezervation),
     url(r'^user_details/(?P<pk>\d+)$', user),
     path('message/', message),
+    path('user_list/', UserListView.as_view(), name='user-list'),
+    path('add_user/', AddUserView.as_view(), name='add_user'),
+    url(r'^login/$', user_login, name='login'),
+    url(r'^logout/$', logout_view, name='logout'),
 ]

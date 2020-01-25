@@ -1,0 +1,1 @@
+setTimeout(() => window.open('/login'), 3000);

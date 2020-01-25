@@ -23,12 +23,11 @@
 <li><a href="/contact/">Contact</a></li>
 </ul>
 
-Name: {{user.name}}<br>
+Name: {{user.username}}<br>
 Surname: {{user.last_name}}<br>
 Date of Birth: {{user.birth_date}}<br>
 Gender: {{ user.get_gender_display }}<br>
 Languages: {{ user.languages}}<br>
-
 <div class="your-class">
 <form method="get" action="/message">
 <button type="submit" class="btn btn-primary">Send a message</button>

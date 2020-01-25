@@ -1,15 +1,14 @@
 from django.db import models
 from datetime import datetime
+from django.contrib.auth.models import User, UserManager
 
 # Create your models here.
-class Users(models.Model):
+class CustomUser(User):
     GENDER_CHOICES = (
         ('M', 'Male'),
         ('F', 'Female'),
     )
 
-    name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     birth_date = models.DateField(blank=True, null=True)
     languages = models.CharField(max_length=32)
