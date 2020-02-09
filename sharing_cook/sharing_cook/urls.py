@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
 from cooking.views import *
@@ -20,19 +21,19 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-# path('', SchoolView.as_view(), name="index"),
     path('',IndexView.as_view(), name="index"),
-    path('cuisine/', cuisine),
-    path('waste_food/', waste_food),
-    path('meet/', meet),
-    path('experience/', experience),
-    path('contact/', contact),
-    path('pay/', pay),
-    path('rezervation/', rezervation),
-    url(r'^user_details/(?P<pk>\d+)$', user),
-    path('message/', message),
+    path('meet/',MeetView.as_view(), name="meet"),
+    path('cuisine/', CuisineView.as_view(), name='cuisine'),
+    path('waste_food/', WasteFoodView.as_view(), name='waste_food'),
+    path('experience/', ExperienceView.as_view(), name='experience'),
+    path('contact/', ContactView.as_view(), name='contact'),
     path('user_list/', UserListView.as_view(), name='user-list'),
     path('add_user/', AddUserView.as_view(), name='add_user'),
+    path('pay/', pay),
+    path('rezervation/', rezervation),
+    path('message/', message),
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
+    path('user_detail/<int:custom>/', UserrView.as_view(), name="user"),
+
 ]

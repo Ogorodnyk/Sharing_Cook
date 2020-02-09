@@ -16,21 +16,27 @@
 <body>
 
 <ul>
-<li><a href="/index/" >Return to main page</a></li>
-<li><a href="/meet/">Return to list of people</a></li>
-<li><a href="/cuisine/">Learn about new cuisine</a></li>
-<li><a href="/waste_food/">No waste food</a></li>
-<li><a href="/contact/">Contact</a></li>
+<li><a href="{% url 'index' %}" >Return to main page</a></li>
+<li><a href="{% url 'meet' %}">Return to list of people</a></li>
+<li><a href="{% url 'cuisine' %}">Learn about new cuisine</a></li>
+<li><a href="{% url 'waste_food' %}">No waste food</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
 </ul>
 
-Name: {{user.username}}<br>
-Surname: {{user.last_name}}<br>
-Date of Birth: {{user.birth_date}}<br>
-Gender: {{ user.get_gender_display }}<br>
-Languages: {{ user.languages}}<br>
+<p>Name: {{custom.username}}</p>
+<p>Surname: {{custom.last_name}}</p>
+<p>Email: {{custom.email}}</p>
+<p>Gender: {{custom.get_gender_display}}</p> <!-- get_gender_display pokazuje get_gender_display imię Choisa -->
+<p>Birth_date: {{custom.birth_date}}</p>
+<p>Age {{custom.age}}</p>
+<p>Language_1: {{custom.language_1}}</p>
+<p>Language_2: {{custom.language_2}}</p>
+<p>Language_3: {{custom.language_3}}</p>
+<p>Country: {{custom.country.name}}</p>
+
 <div class="your-class">
-<form method="get" action="/message">
-<button type="submit" class="btn btn-primary">Send a message</button>
+<form method="get" action="/message/send/">
+<button type="submit" class="btn btn-primary">Send Message</button>
 </form>
 <form method="get" action="/rezervation">
 <button type="submit" class="btn btn-warning">Make rezervation</button>

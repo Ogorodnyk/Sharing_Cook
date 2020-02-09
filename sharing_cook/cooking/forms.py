@@ -1,4 +1,11 @@
 from django import forms
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
+
+GENDER_CHOICES = (
+    ('M', 'Male'),
+    ('F', 'Female'),
+)
 
 
 class AddUserForm(forms.Form):
@@ -8,6 +15,12 @@ class AddUserForm(forms.Form):
     first_name = forms.CharField(max_length=64, label="Name")
     last_name = forms.CharField(max_length=64, label="Last Name")
     email = forms.EmailField(max_length=128, label="Email")
+    gender = forms.ChoiceField(label="Gender M/F", choices=GENDER_CHOICES)
+    birth_date = forms.DateField(label="Birth_date YY-MM-DD")
+    language_1 = forms.CharField(max_length=32, label="Language_1")
+    language_2 = forms.CharField(max_length=32, label="Languages_2")
+    language_3 = forms.CharField(max_length=32, label="Languages_3")
+    country = CountryField().formfield()
 
     def clean_password_repeat(self):
         password = self.cleaned_data.get("password")

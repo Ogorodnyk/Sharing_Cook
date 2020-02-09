@@ -27,27 +27,27 @@
 <li><a href="/cuisine/">Learn about new cuisine</a></li>
 <li><a href="/waste_food/">No waste food</a></li>
 <li><a href="/contact/">Contact</a></li>
-<li> <a href="/"> Hello {{user.username}} (view profile)</a> </li>
+<li> <a href="/user_detail/{{ user.id }}"> Hello {{user.username}} (view profile)</a> </li>
 <li> <a href="/"> List of friends </a> </li>
 <li> <a href="/">  Create new meet  </a> </li>
 <li><a href="/logout/">Log_out</a></li>
 </ul>
 {% else %}
 <ul>
-<li><a href="/meet/">Meet new people</a></li>
-<li><a href="/experience/">Sharing experience</a></li>
-<li><a href="/cuisine/">Learn about new cuisine</a></li>
-<li><a href="/waste_food/">No waste food</a></li>
-<li><a href="/contact/">Contact</a></li>
+<li><a href="{% url 'meet' %}">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
+<li><a href="{% url 'cuisine' %}">Learn about new cuisine</a></li>
+<li><a href="{% url 'waste_food' %}">No waste food</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
 <li><a href="/login/">Sign In</a></li>
-<li><a href="/add_user/">Sign Up</a></li>
+<li><a href="/add_user/">Register</a></li>
 </ul>
      {% load static %}
   <!--  <script src="{% static '/js/pop.js' %}" type="text/javascript"></script> -->
 {% endif %}
 {% endblock %}
 
-<img src="{% static "images/cook.jpg" %}" alt="My image">
+<img src="{% static "/cook.jpg" %}" alt="My image">
 
 
 </body>

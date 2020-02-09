@@ -10,16 +10,10 @@ from django.views import View
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+
 from .forms import AddUserForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
-
-
-# class SchoolView(View):
-#     def get(self, request):
-#         ctx = {
-#             'class_list': SCHOOL_CLASS
-#         }
-#         return render(request, 'school.html', ctx)
+from django.views.generic.edit import CreateView
 
 
 class IndexView(View):
@@ -27,24 +21,49 @@ class IndexView(View):
         return render(request, "index.html", )
 
 
-def cuisine(request):
-    cuisines = Cuisine.objects.all()
-    return render(request, "cuisine.html", context={"cuisines": cuisines, })
+class MeetView(View):
+    def get(self, request, ):
+        users = CustomUser.objects.all()
+        count = CustomUser.objects.count()
+        ctx = {
+            'users': users,
+            "count": count,
+        }
+        return render(request, 'meet.html', ctx)
 
 
-def waste_food(request):
-    return render(request, "waste_food.html", )
+class CuisineView(View):
+    def get(self, request):
+        cuisines = Cuisine.objects.all()
+        ctx = {
+            'cuisines': cuisines,
+        }
+        return render(request, "cuisine.html", ctx)
 
 
-def meet(request):
-    users = CustomUser.objects.all()
-    count = CustomUser.objects.count()
-    return render(request, "meet.html", context={"users": users, "count": count, }, )
+class WasteFoodView(View):
+    def get(self, request):
+        return render(request, "waste_food.html", )
 
 
-def user(request, pk):
-    user = User.objects.get(pk=pk)
-    return render(request, "user.html", context={"user": user, })
+class ExperienceView(View):
+    def get(self, request):
+        return render(request, "experience.html", )
+
+
+class ContactView(View):
+    def get(self, request):
+        return render(request, "contact.html", )
+
+
+class UserrView(View):
+    def get(self, request, custom):
+        custom = CustomUser.objects.get(pk=custom)
+        ctx = {
+            'custom': custom,
+
+        }
+        return render(request, 'user.html', ctx)
 
 
 def message(request):
@@ -59,19 +78,11 @@ def rezervation(request):
     return render(request, "rezervation.html", )
 
 
-def experience(request):
-    return render(request, "experience.html", )
-
-
-def contact(request):
-    return render(request, "contact.html", )
-
-
 class UserListView(View):
 
     def get(self, request):
         customs = CustomUser.objects.all()
-        return render(request, 'user_list.html', {'customs': customs,})
+        return render(request, 'user_list.html', {'customs': customs, })
 
 
 class AddUserView(View):
@@ -87,9 +98,18 @@ class AddUserView(View):
             new_first_name = form.cleaned_data['first_name']
             new_last_name = form.cleaned_data['last_name']
             new_email = form.cleaned_data['email']
+            gender = form.cleaned_data['gender']
+            birth_date = form.cleaned_data['birth_date']
+            language_1 = form.cleaned_data['language_1']
+            language_2 = form.cleaned_data['language_2']
+            language_3 = form.cleaned_data['language_3']
+            country = form.cleaned_data['country']
             try:
-                User.objects.create_user(password=new_password, username=new_login, first_name=new_first_name,
-                                         last_name=new_last_name, email=new_email)
+                CustomUser.objects.create_user(password=new_password, username=new_login, first_name=new_first_name,
+                                               last_name=new_last_name, email=new_email, gender=gender,
+                                               birth_date=birth_date,
+                                               language_1=language_1, language_2=language_2,
+                                               language_3=language_3, country=country)
             except IntegrityError:
                 response = "Login is busy, please give another login"
                 return render(request, 'add_user.html', {'form': form,
@@ -121,3 +141,13 @@ def user_login(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse_lazy('index'))
+
+
+class UserView(View):
+    def get(self, request, ):
+        if request.user.has_perm('advanced_django.add_product'):
+            users = CustomUser.objects.all()
+            ctx = {
+                'users': users,
+            }
+        return render(request, 'products.html', ctx)

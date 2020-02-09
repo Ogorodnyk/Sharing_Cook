@@ -12,10 +12,10 @@
 {% block content %}
 {% if user.is_authenticated %}
 <ul>
-<li><a href="/" >Return to main page</a></li>
-<li><a href="/meet/">Meet new people</a></li>
-<li><a href="/waste_food/">No waste food</a></li>
-<li><a href="/contact/">Contact</a></li>
+<li><a href="{% url 'index' %}">Return to main page</a></li>
+<li><a href="{% url 'meet' %}">Meet new people</a></li>
+<li><a href="{% url 'waste_food' %}">No waste food</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
 <li> <a href="/"> Hello {{user.username}} (view profile)</a> </li>
 <li> <a href="/"> List of friends </a> </li>
 <li> <a href="/">  Create new meet  </a> </li>

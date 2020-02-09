@@ -1,0 +1,5 @@
+<form action="{% url 'send_message' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="receiver_id" value="{{ receiver.id }}" />
+    <input type="file" name="file" />
+</form>
