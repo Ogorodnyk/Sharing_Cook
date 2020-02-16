@@ -15,9 +15,10 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from cooking.views import *
 from django.conf.urls import url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +35,21 @@ urlpatterns = [
     path('message/', message),
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
-    path('user_detail/<int:custom>/', UserrView.as_view(), name="user"),
+    path('user_detail/<int:custom>/', UserView.as_view(), name="user"),
+    url(regex=r"^friends/(?P<username>[\w-]+)/$", view=view_friends, name="friendship_view_friends",),
+    url(r'^friendship/', include('friendship.urls')),
+    path('show_friends/', ShowFriendView.as_view(), name="show_friends"),
+    path('show_request/', ShowRequestView.as_view(), name="show_request"),
+    url(regex=r"^friend/add/(?P<to_username>[\w-]+)/$", view=friendship_add_friend, name="friendship_add_friend",),
+    url(
+        regex=r"^friend/reject/(?P<friendship_request_id>\d+)/$",
+        view=friendship_reject,
+        name="friendship_reject",
+    ),
+    url(
+        regex=r"^friend/requests/rejected/$",
+        view=friendship_request_list_rejected,
+        name="friendship_requests_rejected",
+    ),
 
 ]

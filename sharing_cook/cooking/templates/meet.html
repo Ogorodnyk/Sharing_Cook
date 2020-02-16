@@ -25,7 +25,7 @@ All registred users {{count}}
 <hr style="background-color: black">
 {% for user in users %}
 
-<li><a  href="/user_detail/{{ user.id }}">{{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - {{user.age}}</a></li>
+<li><a  href="/user_detail/{{ user.id }}">{{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - </a></li>
 
 
 {% endfor %}

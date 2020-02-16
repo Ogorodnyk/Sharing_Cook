@@ -1,0 +1,13 @@
+<li><a href="{% url 'meet' %}">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
+<li><a href="{% url 'cuisine' %}">Learn about new cuisine</a></li>
+<li><a href="{% url 'waste_food' %}">No waste food</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+
+<h1>List of Friends</h1>
+
+{% for friend in friends %}
+
+<li><a  href="/user_detail/{{ friend.id }}">{{friend.username}}
+
+{% endfor %}

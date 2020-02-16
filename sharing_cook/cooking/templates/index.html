@@ -28,7 +28,8 @@
 <li><a href="/waste_food/">No waste food</a></li>
 <li><a href="/contact/">Contact</a></li>
 <li> <a href="/user_detail/{{ user.id }}"> Hello {{user.username}} (view profile)</a> </li>
-<li> <a href="/"> List of friends </a> </li>
+<li> <a href="{% url 'show_friends' %}"> List of friends </a> </li>
+<li> <a href="{% url 'show_request' %}"> Show Request </a> </li>
 <li> <a href="/">  Create new meet  </a> </li>
 <li><a href="/logout/">Log_out</a></li>
 </ul>

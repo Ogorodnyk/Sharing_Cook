@@ -1,6 +1,7 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
+from django.contrib.auth.models import User
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -26,7 +27,7 @@ class AddUserForm(forms.Form):
         password = self.cleaned_data.get("password")
         password_repeat = self.cleaned_data.get("password_repeat")
         if password and password_repeat and password != password_repeat:
-            raise forms.ValidationError("Passwrods no match")
+            raise forms.ValidationError("Passwords no match")
         return password_repeat
 
 
@@ -51,3 +52,8 @@ class LoginForm(forms.Form):
                 code='password_mismatch',
             )
         return password2
+
+
+class RelationshipForm(forms.Form):
+    from_person = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
+    to_person = forms.ModelChoiceField(queryset=User.objects.all(), required=True)

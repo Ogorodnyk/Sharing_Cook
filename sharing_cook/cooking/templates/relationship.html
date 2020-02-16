@@ -1,0 +1,11 @@
+{% block content %}
+    <form action="" method="post">
+        {%  csrf_token %}
+
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success"> Add </button>
+    </form>
+    {% if response %}
+        {{ response }}
+    {% endif %}
+{% endblock %}

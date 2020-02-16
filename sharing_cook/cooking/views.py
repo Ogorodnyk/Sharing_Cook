@@ -1,19 +1,38 @@
-from sqlite3 import IntegrityError
-
-from django.shortcuts import render
 # Create your views here.
+from sqlite3 import IntegrityError
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.http import HttpResponse
 from cooking.models import CustomUser, Cuisine
-from datetime import datetime
 from django.views import View
-from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-
-from .forms import AddUserForm, LoginForm
+from .forms import AddUserForm, LoginForm, RelationshipForm
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.models import User
+from friendship.models import Friend, Follow, Block
+from django.shortcuts import get_object_or_404
+from django.conf import settings
+from friendship.models import Friend, Follow, FriendshipRequest, Block
+
+try:
+    from django.contrib.auth import get_user_model
+
+    user_model = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
+
+    user_model = User
+
+get_friendship_context_object_name = lambda: getattr(
+    settings, "FRIENDSHIP_CONTEXT_OBJECT_NAME", "user"
+)
+get_friendship_context_object_list_name = lambda: getattr(
+    settings, "FRIENDSHIP_CONTEXT_OBJECT_LIST_NAME", "users"
+)
+
+from friendship.exceptions import AlreadyExistsError
 
 
 class IndexView(View):
@@ -22,7 +41,7 @@ class IndexView(View):
 
 
 class MeetView(View):
-    def get(self, request, ):
+    def get(self, request):
         users = CustomUser.objects.all()
         count = CustomUser.objects.count()
         ctx = {
@@ -30,6 +49,42 @@ class MeetView(View):
             "count": count,
         }
         return render(request, 'meet.html', ctx)
+
+
+def view_friends(request, username, template_name="friendship/friend/user_list.html"):
+    """ View the friends of a user """
+    user = get_object_or_404(user_model, username=username)
+    friends = Friend.objects.friends(request.user)
+    return render(request, template_name, {
+        get_friendship_context_object_name(): user,
+        'friendship_context_object_name': get_friendship_context_object_name(),
+        'friends': friends,
+    })
+
+
+class ShowFriendView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            friends = Friend.objects.friends(request.user)
+            return render(request, "show_friends.html", {'friends': friends}, )
+
+
+class ShowRequestView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            requests = Friend.objects.unread_requests(user=request.user)
+            return render(request, "show_request.html", {"requests": requests}, )
+
+
+@login_required
+def friendship_requests_detail(
+        request, friendship_request_id, template_name="friendship/friend/request.html"
+):
+    """ View a particular friendship request """
+    f_request = get_object_or_404(FriendshipRequest, id=friendship_request_id)
+
+    return render(request, template_name, {"friendship_request": f_request})
+
 
 
 class CuisineView(View):
@@ -56,7 +111,7 @@ class ContactView(View):
         return render(request, "contact.html", )
 
 
-class UserrView(View):
+class UserView(View):
     def get(self, request, custom):
         custom = CustomUser.objects.get(pk=custom)
         ctx = {
@@ -143,11 +198,57 @@ def logout_view(request):
     return redirect(reverse_lazy('index'))
 
 
-class UserView(View):
-    def get(self, request, ):
-        if request.user.has_perm('advanced_django.add_product'):
-            users = CustomUser.objects.all()
-            ctx = {
-                'users': users,
-            }
-        return render(request, 'products.html', ctx)
+class AddFriendRequestView(View):
+    def post(self, request, to_user):
+        to_user = user_model.objects.get(username=to_user)
+        Friend.objects.add_friend(
+            request.user,  # The sender
+            to_user,  # The recipient
+            message='Hi! I would like to add you')  # This message is optional
+
+        return redirect(reverse_lazy('user'))
+
+
+@login_required
+def friendship_add_friend(
+    request, to_username, template_name="friendship/friend/add.html"
+):
+    """ Create a FriendshipRequest """
+    ctx = {"to_username": to_username}
+
+    if request.method == "POST":
+        to_user = CustomUser.objects.get(username=to_username)
+        from_user = request.user
+        try:
+            Friend.objects.add_friend(from_user, to_user, message='Hi! I would like to add you to Friend')
+        except AlreadyExistsError as e:
+            ctx["errors"] = ["%s" % e]
+        else:
+            return redirect("show_friends")
+
+    return render(request, template_name, ctx)
+
+
+@login_required
+def friendship_reject(request, friendship_request_id):
+    """ Reject a friendship request """
+    if request.method == "POST":
+        f_request = get_object_or_404(
+            request.user.friendship_requests_received, id=friendship_request_id
+        )
+        f_request.reject()
+        return redirect("friendship_request_list")
+
+    return redirect(
+        "friendship_requests_detail", friendship_request_id=friendship_request_id
+    )
+
+@login_required
+def friendship_request_list_rejected(
+    request, template_name="friendship/friend/requests_list.html"
+):
+    """ View rejected friendship requests """
+    # friendship_requests = Friend.objects.rejected_requests(request.user)
+    friendship_requests = FriendshipRequest.objects.filter(rejected__isnull=False)
+
+    return render(request, template_name, {"requests": friendship_requests})

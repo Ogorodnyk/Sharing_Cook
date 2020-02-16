@@ -3,7 +3,7 @@ from django.utils import timezone
 from datetime import datetime, timezone
 from django.contrib.auth.models import User, UserManager
 from django_countries.fields import CountryField
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 
 
 # Create your models here.
@@ -15,9 +15,9 @@ class CustomUser(User):
 
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
     birth_date = models.DateField(blank=True, null=True)
-    language_1 = models.CharField(max_length=32, default='')
-    language_2 = models.CharField(max_length=32, default='')
-    language_3 = models.CharField(max_length=32, default='')
+    language_1 = models.CharField(max_length=32)
+    language_2 = models.CharField(max_length=32, blank=True, null=True)
+    language_3 = models.CharField(max_length=32, blank=True, null=True)
     country = CountryField(default='')
 
     @property
