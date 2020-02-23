@@ -1,0 +1,4 @@
+<li> <a href="{% url 'inbox' %}"> Return to list of inbox message </a> </li>
+<li> <a href="{% url 'inbox' %}"> Return to list of outbox message </a> </li>
+<p>Message from {{message.sender}}</p>
+<p>{{message.msg_content}}</p>

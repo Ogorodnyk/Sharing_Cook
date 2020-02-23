@@ -1,8 +1,15 @@
 from django.db import models
+from django.conf import settings
+
+
 from django.utils import timezone
 from datetime import datetime, timezone
 from django.contrib.auth.models import User, UserManager
 from django_countries.fields import CountryField
+AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+
+
+
 # from django.contrib.auth import get_user_model
 
 
@@ -32,3 +39,27 @@ class Cuisine(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, related_name="sender",on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name="receiver",on_delete=models.CASCADE)
+    msg_content = models.CharField(max_length=256)
+    date = models.DateField(default=datetime.now)
+
+# class MessageManager(models.Manager):
+#
+#     def msg_content(self, receiver):
+#         """
+#         Returns all messages that were received by the given user and are not
+#         marked as deleted.
+#         """
+#         return self.filter(
+#             receiver=receiver,
+#             receiver_deleted_at__isnull=True,
+#         )
+

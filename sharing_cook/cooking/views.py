@@ -2,11 +2,11 @@
 from sqlite3 import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from cooking.models import CustomUser, Cuisine
+from cooking.models import CustomUser, Cuisine, Message
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .forms import AddUserForm, LoginForm, RelationshipForm
+from .forms import AddUserForm, LoginForm, MessageForm
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -15,6 +15,7 @@ from friendship.models import Friend, Follow, Block
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from friendship.models import Friend, Follow, FriendshipRequest, Block
+from django.contrib import messages
 
 try:
     from django.contrib.auth import get_user_model
@@ -84,7 +85,6 @@ def friendship_requests_detail(
     f_request = get_object_or_404(FriendshipRequest, id=friendship_request_id)
 
     return render(request, template_name, {"friendship_request": f_request})
-
 
 
 class CuisineView(View):
@@ -209,9 +209,20 @@ class AddFriendRequestView(View):
         return redirect(reverse_lazy('user'))
 
 
+class AddFriendRequestView(View):
+    def post(self, request, to_user):
+        to_user = user_model.objects.get(username=to_user)
+        Friend.objects.add_friend(
+            request.user,  # The sender
+            to_user,  # The recipient
+            message='Hi! I would like to add you')  # This message is optional
+
+        return redirect(reverse_lazy('user'))
+
+
 @login_required
 def friendship_add_friend(
-    request, to_username, template_name="friendship/friend/add.html"
+        request, to_username, template_name="friendship/friend/add.html"
 ):
     """ Create a FriendshipRequest """
     ctx = {"to_username": to_username}
@@ -243,12 +254,51 @@ def friendship_reject(request, friendship_request_id):
         "friendship_requests_detail", friendship_request_id=friendship_request_id
     )
 
+
 @login_required
 def friendship_request_list_rejected(
-    request, template_name="friendship/friend/requests_list.html"
+        request, template_name="friendship/friend/requests_list.html"
 ):
     """ View rejected friendship requests """
     # friendship_requests = Friend.objects.rejected_requests(request.user)
     friendship_requests = FriendshipRequest.objects.filter(rejected__isnull=False)
 
     return render(request, template_name, {"requests": friendship_requests})
+
+
+class MessagesSendView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            form = MessageForm()
+            return render(request, 'send_messages.html', {'form': form})
+
+    def post(self, request):
+        sender = request.user
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            form.save(sender=request.user)
+        return redirect(reverse_lazy('meet'))
+
+
+class InboxView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            message_list = Message.objects.filter(receiver=request.user.id)
+            return render(request, "show_message.html", {'message_list': message_list}, )
+
+
+class OutBoxView(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            message_list = Message.objects.filter(sender=request.user.id)
+            return render(request, "show_message_outbox.html", {'message_list': message_list}, )
+
+
+class MessageView(View):
+    def get(self, request, message):
+        message = Message.objects.get(pk=message)
+        ctx = {
+            'message': message,
+
+        }
+        return render(request, 'message_view.html', ctx)

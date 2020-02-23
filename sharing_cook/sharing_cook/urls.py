@@ -36,9 +36,12 @@ urlpatterns = [
     url(r'^login/$', user_login, name='login'),
     url(r'^logout/$', logout_view, name='logout'),
     path('user_detail/<int:custom>/', UserView.as_view(), name="user"),
+    path('message_detail/<int:message>/', MessageView.as_view(), name="message"),
     url(regex=r"^friends/(?P<username>[\w-]+)/$", view=view_friends, name="friendship_view_friends",),
     url(r'^friendship/', include('friendship.urls')),
     path('show_friends/', ShowFriendView.as_view(), name="show_friends"),
+    path('inbox/', InboxView.as_view(), name="inbox"),
+    path('outbox/', OutBoxView.as_view(), name="outbox"),
     path('show_request/', ShowRequestView.as_view(), name="show_request"),
     url(regex=r"^friend/add/(?P<to_username>[\w-]+)/$", view=friendship_add_friend, name="friendship_add_friend",),
     url(
@@ -51,5 +54,8 @@ urlpatterns = [
         view=friendship_request_list_rejected,
         name="friendship_requests_rejected",
     ),
+    url(r'^send_message/',  MessagesSendView.as_view(),
+        name="message_create"),
 
+    # path(r'inbox/', inbox, name='messages_inbox'),
 ]

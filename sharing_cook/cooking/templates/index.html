@@ -32,6 +32,9 @@
 <li> <a href="{% url 'show_request' %}"> Show Request </a> </li>
 <li> <a href="/">  Create new meet  </a> </li>
 <li><a href="/logout/">Log_out</a></li>
+<li> <a href="{% url 'message_create' %}"> Send Message </a> </li>
+<li> <a href="{% url 'inbox' %}"> Inbox </a> </li>
+<li> <a href="{% url 'outbox' %}"> Outbox </a> </li>
 </ul>
 {% else %}
 <ul>

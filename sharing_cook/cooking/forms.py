@@ -2,6 +2,7 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from django.contrib.auth.models import User
+from .models import Message
 
 GENDER_CHOICES = (
     ('M', 'Male'),
@@ -57,3 +58,26 @@ class LoginForm(forms.Form):
 class RelationshipForm(forms.Form):
     from_person = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
     to_person = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
+
+
+class MessageForm(forms.Form):
+    # sender = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
+    receiver = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
+    msg_content = forms.CharField(widget=forms.Textarea())
+
+
+    def save(self, sender, ):
+        receiver = self.cleaned_data['receiver']
+        msg_content = self.cleaned_data['msg_content']
+        message_list = []
+
+        # for r in receiver:
+        msg = Message(
+            sender = sender,
+                receiver = receiver,
+             msg_content = msg_content,
+        )
+        msg.save()
+        message_list.append(msg)
+
+        return message_list
