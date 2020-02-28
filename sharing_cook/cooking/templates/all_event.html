@@ -4,9 +4,13 @@
   <meta charset="UTF-8">
   <title>Experience</title>
     {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static 'CSS/index.css' %}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/event.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<style>
+body {
+  background-image: url("/static/people-sitting.jpg");
+}
+</style>
 </head>
 <body>
 <ul>
@@ -18,5 +22,13 @@
 </ul>
 <h3>Explore culinary experiences with locals in 250+ countries.</h3>
 <h4>Event in your neighbourhood</h4>
+{% for event in events %}
+<ol>
+<a href="/event_detail/{{ event.id }}" class="badge badge-info">
+{{event.owner}}  create event in {{event.place}} to {{event.people}} people
+</a>
+</ol>
+
+{% endfor %}
 </body>
 </html>

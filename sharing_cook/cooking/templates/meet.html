@@ -4,29 +4,34 @@
 <head>
   <meta charset="UTF-8">
   <title>New People</title>
-<!--<link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"-->
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/meet.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<style>
+body {
+  background-image: url("/static/table.jpg");
+}
+</style>
 </head>
 <body>
 
 <ul>
-<li><a href="/" class="help">Return to main page</a></li>
-<li><a href="/cuisine/">Learn about new cuisine</a></li>
-<li><a href="/waste_food/">No waste food</a></li>
-<li><a href="/contact/">Contact</a></li>
+<li id="nav"><a href="/" id="nava">Return to main page</a></li>
+<li id="nav"> <a href="/cuisine/" id="nava">Learn about new cuisine</a></li>
+<li id="nav"><a href="/waste_food/" id="nava">No waste food</a></li>
+<li id="nav"><a href="/contact/" id="nava">Contact</a></li>
 </ul>
 
 
-<h2>Join 100+ MILLION PEOPLE cooking and making new friends</h2>
-<img src="{% static "images/people.jpeg" %}" alt="My image">
+<h2 style="color: black; font-weight: bold">Join 100+ MILLION PEOPLE cooking and making new friends</h2>
+
 <br>
 <br>
-All registred users {{count}}
+<h3 style="color: black; font-weight: bold">All registered users {{count}}</h3>
 <hr style="background-color: black">
 {% for user in users %}
-
-<li><a  href="/user_detail/{{ user.id }}">{{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - </a></li>
-
+<ol>
+<span><a  href="/user_detail/{{ user.id }}" id="user"> {{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - </a ></span></p>
+</ol>
 
 {% endfor %}
 </body>

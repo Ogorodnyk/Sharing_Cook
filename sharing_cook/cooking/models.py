@@ -36,6 +36,7 @@ class CustomUser(User):
 
 class Cuisine(models.Model):
     name = models.CharField(max_length=48)
+    description = models.TextField(null=True)
 
     def __str__(self):
         return self.name
@@ -63,3 +64,23 @@ class Message(models.Model):
 #             receiver_deleted_at__isnull=True,
 #         )
 
+
+class Event(models.Model):
+
+    COST_CHOISES = (
+        ('M', 'Money'),
+        ('P', 'Product'),
+        ('C', "Help with cooking"),
+        ('D', "Help with wash dish"),
+    )
+
+    owner = models.ForeignKey(User, related_name="owner", on_delete=models.CASCADE)
+    people = models.IntegerField()
+    date = models.DateTimeField()
+    place = models.CharField(max_length=128)
+    cuisine = models.ForeignKey(Cuisine, on_delete=models.CASCADE)
+    meal = models.CharField(max_length=256,default='')
+    cost = models.CharField(max_length=1, choices=COST_CHOISES, default='M')
+
+    def __str__(self):
+        return f"{self.owner} create event to {self.people} people cuisine {self.cuisine}"

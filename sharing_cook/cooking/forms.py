@@ -2,13 +2,19 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from django.contrib.auth.models import User
-from .models import Message
+from .models import Message, Cuisine, Event
 
 GENDER_CHOICES = (
     ('M', 'Male'),
     ('F', 'Female'),
 )
 
+COST_CHOISES = (
+    ('M', 'Money'),
+    ('P', 'Product'),
+    ('C', "Help with cooking"),
+    ('D', "Help with wash dish"),
+)
 
 class AddUserForm(forms.Form):
     login = forms.CharField(max_length=64, label="Login")
@@ -81,3 +87,67 @@ class MessageForm(forms.Form):
         message_list.append(msg)
 
         return message_list
+
+class MessageDirectForm(forms.Form):
+    msg_content = forms.CharField(widget=forms.Textarea())
+
+    def save(self, sender, receiver ):
+        # receiver = self.cleaned_data['receiver']
+        msg_content = self.cleaned_data['msg_content']
+
+        message_list = []
+
+        # for r in receiver:
+        msg = Message(
+            sender = sender,
+            receiver = receiver,
+             msg_content = msg_content,
+        )
+        msg.save()
+        message_list.append(msg)
+
+        return message_list
+
+
+# class EventCreateForm(forms.Form):
+#     # owner = models.ForeignKey(User, related_name="owner", on_delete=models.CASCADE)
+#     people = forms.IntegerField()
+#     date = forms.DateTimeField()
+#     place = forms.CharField()
+#     cuisine = forms.ModelChoiceField(queryset=Cuisine.objects.all(), required=True)
+#     meal = forms.CharField()
+#     cost = forms.ChoiceField(label="COST_CHOISES", choices=COST_CHOISES)
+
+class EventCreateForm(forms.Form):
+    # sender = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
+    people = forms.IntegerField()
+    date = forms.DateTimeField()
+    place = forms.CharField()
+    cuisine = forms.ModelChoiceField(queryset=Cuisine.objects.all(), required=True)
+    meal = forms.CharField()
+    cost = forms.ChoiceField(label="COST_CHOISES", choices=COST_CHOISES)
+
+
+    def save(self, owner, ):
+        people = self.cleaned_data['people']
+        date = self.cleaned_data['date']
+        place = self.cleaned_data['place']
+        cuisine = self.cleaned_data['cuisine']
+        meal = self.cleaned_data['meal']
+        cost = self.cleaned_data['cost']
+        event_list = []
+
+        # for r in receiver:
+        event = Event(
+            owner = owner,
+            people = people,
+             date = date,
+            place= place,
+            cuisine = cuisine,
+        meal = meal,
+            cost=cost
+        )
+        event.save()
+        event_list.append(event)
+
+        return event_list

@@ -1,3 +1,6 @@
+body {
+  background-image: url("table.jpg");
+}
 
   ul {
   list-style: none; /*убираем маркеры списка*/
@@ -22,9 +25,9 @@ a {
 }
 
 
-a:hover {
-  background:#afc2c5;/*добавляем эффект при наведении*/
-}
+/*a:hover {*/
+/*  background:#afc2c5;!*добавляем эффект при наведении*!*/
+/*}*/
    a:visited {
     color: #cecece; /* Цвет посещенных ссылок */
    }
@@ -34,3 +37,35 @@ a:hover {
 li {
   float:left; /*Размещаем список горизонтально для реализации меню*/
 }
+
+
+#user_list{
+    /*float: inside;*/
+}
+
+
+#user{
+  text-decoration: none; /*убираем подчеркивание текста ссылок*/
+  /*background: #3e5831; !*добавляем фон к пункту меню (заменив этот параметр, вы поменяете цвет всех пунктов меню)*!*/
+  /*color:#fff; !*меняем цвет ссылок*!*/
+  padding:0px 15px; /*добавляем отступ*/
+  font-family: Roboto; /*меняем шрифт*/
+    font-weight: bold;
+    font-size: larger;
+  line-height:50px; /*ровняем меню по вертикали*/
+  display: block;
+  border-right: 1px solid black; /*добавляем бордюр справа*/
+  -moz-transition: all 0.3s 0.01s ease; /*делаем плавный переход*/
+  -o-transition: all 0.3s 0.01s ease;
+  -webkit-transition: all 0.3s 0.01s ease;
+}
+
+/*#user:hover {*/
+/*  background: #9e6e59;!*добавляем эффект при наведении*!*/
+/*}*/
+   #user:visited {
+    color: #d6d4d5; /* Цвет посещенных ссылок */
+   }
+   #user:active {
+    color: #ffff00; /* Цвет активных ссылок */
+   }

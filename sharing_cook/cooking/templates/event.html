@@ -1,0 +1,20 @@
+{% load static %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<p>Owner: {{event.owner}}</p>
+<p>People: {{event.people}}</p>
+<p>Date: {{event.date}}</p>
+<p>Place: {{event.place}}</p>
+<p>Cuisine: {{event.cuisine}}</p>
+<p>Meal {{event.meal}}</p>
+<p>Cost: {{event.get_cost_display}}</p>
+
+<div class="your-class">
+<form method="get" action="#">
+<button type="submit" class="btn btn-primary">Send Message</button>
+</form>
+<form method="get" action="#">
+<button type="submit" class="btn btn-success">Do reservation</button>
+</form>
+</div>

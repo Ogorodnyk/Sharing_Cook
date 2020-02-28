@@ -2,11 +2,11 @@
 from sqlite3 import IntegrityError
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from cooking.models import CustomUser, Cuisine, Message
+from cooking.models import CustomUser, Cuisine, Message, Event
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .forms import AddUserForm, LoginForm, MessageForm
+from .forms import AddUserForm, LoginForm, MessageForm, MessageDirectForm, EventCreateForm
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -95,15 +95,19 @@ class CuisineView(View):
         }
         return render(request, "cuisine.html", ctx)
 
+class CuisineDetailView(View):
+    def get(self, request, cuisine):
+        cuisine = Cuisine.objects.get(pk=cuisine)
+        ctx = {
+            'cuisine': cuisine,
+        }
+        return render(request, "show_cuisine.html", ctx)
+
 
 class WasteFoodView(View):
     def get(self, request):
         return render(request, "waste_food.html", )
 
-
-class ExperienceView(View):
-    def get(self, request):
-        return render(request, "experience.html", )
 
 
 class ContactView(View):
@@ -273,11 +277,25 @@ class MessagesSendView(View):
             return render(request, 'send_messages.html', {'form': form})
 
     def post(self, request):
-        sender = request.user
         form = MessageForm(request.POST)
         if form.is_valid():
             form.save(sender=request.user)
-        return redirect(reverse_lazy('meet'))
+        return redirect(reverse_lazy('outbox'))
+
+
+class MessagesDirectView(View):
+    def get(self, request, *args, **kwargs):
+
+        if request.user.is_authenticated:
+            form = MessageDirectForm()
+            return render(request, 'send_messages.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = MessageDirectForm(request.POST)
+        if form.is_valid():
+            # custom = CustomUser.objects.filter(id=id)
+            form.save(sender=request.user, receiver=CustomUser.objects.get(receiver=9))  # Fiona
+            return redirect(reverse_lazy('outbox'))
 
 
 class InboxView(View):
@@ -302,3 +320,39 @@ class MessageView(View):
 
         }
         return render(request, 'message_view.html', ctx)
+
+
+class EventCreate(View):
+    def get(self, request):
+        if request.user.is_authenticated:
+            form = EventCreateForm()
+            return render(request, 'event_create.html', {'form': form})
+
+    def post(self, request):
+        form = EventCreateForm(request.POST)
+        if form.is_valid():
+            form.save(owner=request.user)
+        return redirect(reverse_lazy('outbox'))
+
+class MyEventView(View):
+    def get(self, request,*args, **kwargs):
+        if request.user.is_authenticated:
+            event_list = Event.objects.filter(owner=request.user)
+            return render(request, "show_event.html", {'event_list': event_list}, )
+
+class AllEventView(View):
+    def get(self, request):
+        events = Event.objects.all()
+        ctx = {
+            'events': events,
+        }
+        return render(request, "all_event.html", ctx)
+
+class EventView(View):
+    def get(self, request, event):
+        event = Event.objects.get(pk=event)
+        ctx = {
+            'event': event,
+
+        }
+        return render(request, 'event.html', ctx)

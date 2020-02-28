@@ -1,3 +1,6 @@
+img {
+  filter: contrast(27%);
+}
 
   ul {
   list-style: none; /*убираем маркеры списка*/
@@ -22,9 +25,9 @@ a {
 }
 
 
-a:hover {
-  background:#afc2c5;/*добавляем эффект при наведении*/
-}
+/*a:hover {*/
+/*  background:#afc2c5;!*добавляем эффект при наведении*!*/
+/*}*/
    a:visited {
     color: #cecece; /* Цвет посещенных ссылок */
    }

@@ -33,7 +33,7 @@
 {% endif %}
 {% endblock %}
 {% for cuisine in cuisines %}
-<a href="#" class="badge badge-info">
+<a href="/cuisine_detail/{{ cuisine.id }}" class="badge badge-info">
 
 {{cuisine.name}}
 </a>

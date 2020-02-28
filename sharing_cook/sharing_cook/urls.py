@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from cooking.views import *
+from booking.views import *
 from django.conf.urls import url
+from booking import views
 
 
 urlpatterns = [
@@ -25,8 +27,9 @@ urlpatterns = [
     path('',IndexView.as_view(), name="index"),
     path('meet/',MeetView.as_view(), name="meet"),
     path('cuisine/', CuisineView.as_view(), name='cuisine'),
+    path('cuisine_detail/<int:cuisine>/', CuisineDetailView.as_view(), name="cuisine_detail"),
     path('waste_food/', WasteFoodView.as_view(), name='waste_food'),
-    path('experience/', ExperienceView.as_view(), name='experience'),
+    path('all_event/', AllEventView.as_view(), name='experience'),
     path('contact/', ContactView.as_view(), name='contact'),
     path('user_list/', UserListView.as_view(), name='user-list'),
     path('add_user/', AddUserView.as_view(), name='add_user'),
@@ -54,8 +57,13 @@ urlpatterns = [
         view=friendship_request_list_rejected,
         name="friendship_requests_rejected",
     ),
-    url(r'^send_message/',  MessagesSendView.as_view(),
-        name="message_create"),
+    url(r'^send_message/',  MessagesSendView.as_view(), name="message_create"),
+    # url(r'send_message_direct/',  MessagesDirectView.as_view(), name="message_direct"),
 
-    # path(r'inbox/', inbox, name='messages_inbox'),
+    path(r'send_message_direct/<int:custom>/', MessagesDirectView.as_view(), name="message_direct"),
+    url(r'^event_create/', EventCreate.as_view(),
+        name="event_create"),
+    path('event_detail/', MyEventView.as_view(), name="event"),
+    path('event_detail/<int:event>/', EventView.as_view(), name="event_detail"),
+
 ]
