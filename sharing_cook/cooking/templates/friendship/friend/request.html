@@ -1,12 +1,16 @@
+   {% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
 <div>{{ friendship_request.from_user }} wants to be friends with {{ friendship_request.to_user }} </div>
 <h1>{{ friendship_request.message }}</h1>
 
 <form method="post" action="{% url 'friendship_accept' friendship_request.pk %}">
 {% csrf_token %}
-<input type="submit" value="accept" />
+<button type="submit" class="btn btn-success">Accept</button>
 </form>
 
 <form method="post" action="{% url 'friendship_reject' friendship_request.pk %}">
 {% csrf_token %}
-<input type="submit" value="reject" />
+<button type="submit" class="btn btn-danger">Reject</button>
 </form>
+

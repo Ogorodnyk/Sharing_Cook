@@ -6,7 +6,7 @@ from cooking.models import CustomUser, Cuisine, Message, Event
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from .forms import AddUserForm, LoginForm, MessageForm, MessageDirectForm, EventCreateForm
+from .forms import AddUserForm, LoginForm, MessageForm, MessageDirectForm, EventCreateForm, UserSearchForm, EventSearchForm
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -45,12 +45,22 @@ class MeetView(View):
     def get(self, request):
         users = CustomUser.objects.all()
         count = CustomUser.objects.count()
+        form = UserSearchForm(request.POST)
         ctx = {
             'users': users,
             "count": count,
+            "form": form,
         }
         return render(request, 'meet.html', ctx)
-
+    def post(self, request):
+        form = UserSearchForm(request.POST)
+        if form.is_valid():
+            customers = CustomUser.objects.filter(
+                first_name__icontains=form.cleaned_data['first_name'],
+                last_name__icontains=form.cleaned_data['last_name'],
+            )
+            return render(request, 'meet.html', {'form': form, 'customers': customers})
+        return render(request, 'meet.html', {'form': form})
 
 def view_friends(request, username, template_name="friendship/friend/user_list.html"):
     """ View the friends of a user """
@@ -66,8 +76,9 @@ def view_friends(request, username, template_name="friendship/friend/user_list.h
 class ShowFriendView(View):
     def get(self, request):
         if request.user.is_authenticated:
+            friends_count = Friend.objects.friends(request.user).count(Friend.objects)
             friends = Friend.objects.friends(request.user)
-            return render(request, "show_friends.html", {'friends': friends}, )
+            return render(request, "show_friends.html", {'friends': friends, "friends_count": friends_count}, )
 
 
 class ShowRequestView(View):
@@ -137,12 +148,27 @@ def rezervation(request):
     return render(request, "rezervation.html", )
 
 
-class UserListView(View):
+# class UserListView(View):
+#
+#     def get(self, request):
+#         customs = CustomUser.objects.all()
+#         return render(request, 'user_list.html', {'customs': customs, })
+
+class UserSearchView(View):
 
     def get(self, request):
-        customs = CustomUser.objects.all()
-        return render(request, 'user_list.html', {'customs': customs, })
+        form = UserSearchForm()
+        return render(request, 'user_search.html', {'form': form,})
 
+    def post(self, request):
+        form = UserSearchForm(request.POST)
+        if form.is_valid():
+            users = CustomUser.objects.filter(
+                first_name__icontains=form.cleaned_data['first_name'],
+                last_name__icontains=form.cleaned_data['last_name'],
+            )
+            return render(request, 'user_search.html', {'form': form, 'users': users})
+        return render(request, 'user_search.html', {'form': form})
 
 class AddUserView(View):
     def get(self, request):
@@ -342,11 +368,22 @@ class MyEventView(View):
 
 class AllEventView(View):
     def get(self, request):
-        events = Event.objects.all()
+        events = Event.objects.all().order_by('date')
+        form = EventSearchForm()
         ctx = {
             'events': events,
+            'form':form,
         }
         return render(request, "all_event.html", ctx)
+
+    def post(self, request):
+        form = EventSearchForm(request.POST)
+        if form.is_valid():
+            places = Event.objects.filter(
+                place__icontains=form.cleaned_data['place'],
+            )
+            return render(request, 'all_event.html', {'form': form, 'places': places})
+        return render(request, 'all_event.html', {'form': form})
 
 class EventView(View):
     def get(self, request, event):

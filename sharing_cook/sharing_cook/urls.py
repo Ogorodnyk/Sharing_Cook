@@ -31,7 +31,7 @@ urlpatterns = [
     path('waste_food/', WasteFoodView.as_view(), name='waste_food'),
     path('all_event/', AllEventView.as_view(), name='experience'),
     path('contact/', ContactView.as_view(), name='contact'),
-    path('user_list/', UserListView.as_view(), name='user-list'),
+    # path('user_list/', UserListView.as_view(), name='user-list'),
     path('add_user/', AddUserView.as_view(), name='add_user'),
     path('pay/', pay),
     path('rezervation/', rezervation),
@@ -64,5 +64,6 @@ urlpatterns = [
     path('my_event_detail/', MyEventView.as_view(), name="my_event"),
     path('event_detail/<int:event>/', EventView.as_view(), name="event_detail"),
     path('events_detail_user/<int:events_user>/', EventUserView.as_view(), name="events_user"),
+    path('user_search/', UserSearchView.as_view(), name='user_search'),
 
 ]

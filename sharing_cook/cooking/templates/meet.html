@@ -18,6 +18,7 @@ body {
 <li id="nav"><a href="/" id="nava">Return to main page</a></li>
 <li id="nav"> <a href="/cuisine/" id="nava">Learn about new cuisine</a></li>
 <li id="nav"><a href="/waste_food/" id="nava">No waste food</a></li>
+<li id="nav"><a href="{% url 'user_search' %}" id="nava">Find user</a></li>
 <li id="nav"><a href="/contact/" id="nava">Contact</a></li>
 </ul>
 
@@ -28,10 +29,27 @@ body {
 <br>
 <h3 style="color: black; font-weight: bold">All registered users {{count}}</h3>
 <hr style="background-color: black">
+
+    <form action="" method="post" style="color: white">
+        {% csrf_token %}
+        {{ form.as_ul }}
+        <input type="submit" value="Search" />
+    </form>
+     <br>
+
+    {% if customers %}
+        <div>Wyniki: </div>
+        <p>
+            {% for custom in customers %}
+                 <a href="/user_detail/{{ custom.id }}" style="color: white"> {{custom.last_name}}  {{ custom.first_name }}</a>
+            {% endfor %}
+            </span>
+        </p>
+        {% endif %}
 {% for user in users %}
-<ol>
-<span><a  href="/user_detail/{{ user.id }}" id="user"> {{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - </a ></span></p>
-</ol>
+
+<p><a  href="/user_detail/{{ user.id }}" style="color: white"> {{user.username}}  - {{user.last_name}} {{user.get_gender_display}} - {{user.languages}} - {{user.birth_date}} - </a ></p>
+
 
 {% endfor %}
 </body>

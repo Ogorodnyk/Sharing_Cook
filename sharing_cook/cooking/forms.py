@@ -138,3 +138,11 @@ class EventCreateForm(forms.Form):
         event_list.append(event)
 
         return event_list
+
+
+class UserSearchForm(forms.Form):
+    first_name = forms.CharField(label='first_name', min_length=3, max_length=64,required=False)
+    last_name = forms.CharField(label='last_name', min_length=3, max_length=64,required=False)
+
+class EventSearchForm(forms.Form):
+    place = forms.CharField(label='Find event in your City', min_length=3, max_length=64,required=False)

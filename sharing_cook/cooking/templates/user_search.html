@@ -16,16 +16,18 @@
 <li id="nav"><a href="/contact/" id="nava">Contact</a></li>
 </ul>
 
-<br>
-<br>
-<h3 style="color: black; font-weight: bold">List of your friend {{friends_count}} </h3>
-<hr style="background-color: black">
-{% for friend in friends %}
-<ol>
-<span><a  href="/user_detail/{{ friend.id }}" id="user"">{{friend.username}}</a></span>
-
-</ol>
-{% endfor %}
-</body>
-</html>
-
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Search" />
+    </form>
+    {% if users %}
+        <div>Wyniki: </div>
+        <ul>
+            {% for user in users %}
+                <li> <a href="/user_detail/{{ user.id }}"> {{user.last_name}}  {{ user.first_name }}</a> </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+{%  endblock %}
