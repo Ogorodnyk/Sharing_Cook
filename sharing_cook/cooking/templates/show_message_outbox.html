@@ -8,6 +8,6 @@
 
 {% for message in message_list %}
 
-<li><a  href="/message_detail/{{ message.id }}">Message from You to {{message.receiver}} : {{ message.msg_content }}<li>
-
+<p><a  href="/message_detail/{{ message.id }}">Message from You to {{message.receiver}} : {{ message.msg_content }} </a> </p>
+{{message.date}}
 {% endfor %}

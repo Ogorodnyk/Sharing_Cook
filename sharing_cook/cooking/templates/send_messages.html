@@ -1,7 +1,75 @@
+  {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
+{% if user.is_authenticated %}
+<ul>
+<li><a href="/meet/">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
+<li><a href="/cuisine/">Learn about new cuisine</a></li>
+<li><a href="/waste_food/">No waste food</a></li>
+<li><a href="/contact/">Contact</a></li>
+<li> <a href="/user_detail/{{ user.id }}"> Hello {{user.username}} (view profile)</a> </li>
+<li> <a href="{% url 'show_friends' %}"> List of friends </a> </li>
+<li> <a href="{% url 'show_request' %}"> Show Request </a> </li>
+<li> <a href="{% url 'event_create' %}"> Create new Event </a> </li>
+<li><a href="/logout/">Log_out</a></li>
+<li> <a href="{% url 'inbox' %}"> Inbox </a> </li>
+<li> <a href="{% url 'outbox' %}"> Outbox </a> </li>
+<li> <a href="{% url 'my_event' %}"> My Event </a> </li>
+</ul>
+{% else %}
+<ul>
+<li><a href="{% url 'meet' %}">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
+<li><a href="{% url 'cuisine' %}">Learn about new cuisine</a></li>
+<li><a href="{% url 'waste_food' %}">No waste food</a></li>
+<li><a href="{% url 'contact' %}">Contact</a></li>
+<li><a href="/login/">Sign In</a></li>
+<li><a href="/add_user/">Register</a></li>
+</ul>
+
+{% endif %}
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+</style>
+{% block content %}
+<div class="container">
     <form action="" method="post">
         {%  csrf_token %}
-
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success"> Confirm </button>
+        {{ form.as_p  }}
+        <button type="submit"> Send Message </button>
     </form>
+    </div>
+{% endblock %}

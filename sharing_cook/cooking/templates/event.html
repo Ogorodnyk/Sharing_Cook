@@ -1,17 +1,17 @@
 {% load static %}
-
+<link rel="stylesheet" type="text/css" href="{% static 'CSS/bar.css' %}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
 <p>Owner: {{event.owner}}</p>
 <p>People: {{event.people}}</p>
 <p>Date: {{event.date}}</p>
 <p>Place: {{event.place}}</p>
-<p>Cuisine: {{event.cuisine}}</p>
+<p>Cuisine: {{event.cuisine}} , if you want know about this cuisne  <a href="/cuisine_detail/{{ event.cuisine.id }}" class="badge badge-info"> click here</a></p>
 <p>Meal {{event.meal}}</p>
 <p>Cost: {{event.get_cost_display}}</p>
 
 <div class="your-class">
-<form method="get" action="#">
+<form method="get" action="/send_message_direct/{{event.owner.id}}">
 <button type="submit" class="btn btn-primary">Send Message</button>
 </form>
 <form method="get" action="#">

@@ -24,10 +24,10 @@ class AddUserForm(forms.Form):
     last_name = forms.CharField(max_length=64, label="Last Name")
     email = forms.EmailField(max_length=128, label="Email")
     gender = forms.ChoiceField(label="Gender M/F", choices=GENDER_CHOICES)
-    birth_date = forms.DateField(label="Birth_date YY-MM-DD")
-    language_1 = forms.CharField(max_length=32, label="Language_1")
-    language_2 = forms.CharField(max_length=32, label="Languages_2")
-    language_3 = forms.CharField(max_length=32, label="Languages_3")
+    birth_date = forms.DateField(widget=forms.SelectDateWidget(years=range(1900, 2010)), label="Birth_date YY-MM-DD")
+    language_1 = forms.CharField(max_length=32, label="Language_1", required=False)
+    language_2 = forms.CharField(max_length=32, label="Languages_2", required=False)
+    language_3 = forms.CharField(max_length=32, label="Languages_3", required=False)
     country = CountryField().formfield()
 
     def clean_password_repeat(self):
@@ -42,13 +42,6 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
-    # class AddUserForm(forms.Form):
-    #     login = forms.CharField()
-    #     password1 = forms.CharField(widget=forms.PasswordInput)
-    #     password2 = forms.CharField(widget=forms.PasswordInput)
-    #     name = forms.CharField(max_length=100)
-    #     last_name = forms.CharField(max_length=100)
-    #     email = forms.CharField(max_length=100, validators=[EmailValidator()])
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -109,28 +102,22 @@ class MessageDirectForm(forms.Form):
         return message_list
 
 
-# class EventCreateForm(forms.Form):
-#     # owner = models.ForeignKey(User, related_name="owner", on_delete=models.CASCADE)
-#     people = forms.IntegerField()
-#     date = forms.DateTimeField()
-#     place = forms.CharField()
-#     cuisine = forms.ModelChoiceField(queryset=Cuisine.objects.all(), required=True)
-#     meal = forms.CharField()
-#     cost = forms.ChoiceField(label="COST_CHOISES", choices=COST_CHOISES)
 
 class EventCreateForm(forms.Form):
     # sender = forms.ModelChoiceField(queryset=User.objects.all(), required=True)
     people = forms.IntegerField()
-    date = forms.DateTimeField()
+    date = forms.DateTimeField(widget=forms.SelectDateWidget())
+    time = forms.TimeField(widget=forms.TimeInput())
     place = forms.CharField()
     cuisine = forms.ModelChoiceField(queryset=Cuisine.objects.all(), required=True)
-    meal = forms.CharField()
-    cost = forms.ChoiceField(label="COST_CHOISES", choices=COST_CHOISES)
+    meal = forms.CharField(widget=forms.Textarea())
+    cost = forms.ChoiceField(label="COST", choices=COST_CHOISES)
 
 
     def save(self, owner, ):
         people = self.cleaned_data['people']
         date = self.cleaned_data['date']
+        time = self.cleaned_data['time']
         place = self.cleaned_data['place']
         cuisine = self.cleaned_data['cuisine']
         meal = self.cleaned_data['meal']

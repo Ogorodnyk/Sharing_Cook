@@ -15,13 +15,34 @@
 </head>
 <body>
 
+{% if user.is_authenticated %}
 <ul>
-<li><a href="{% url 'index' %}" >Return to main page</a></li>
-<li><a href="{% url 'meet' %}">Return to list of people</a></li>
+<li><a href="/meet/">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
+<li><a href="/cuisine/">Learn about new cuisine</a></li>
+<li><a href="/waste_food/">No waste food</a></li>
+<li><a href="/contact/">Contact</a></li>
+<li> <a href="/user_detail/{{ user.id }}"> Hello {{user.username}} (view profile)</a> </li>
+<li> <a href="{% url 'show_friends' %}"> List of friends </a> </li>
+<li> <a href="{% url 'show_request' %}"> Show Request {{requests}} </a> </li>
+<li> <a href="{% url 'event_create' %}"> Create new Event </a> </li>
+<li><a href="/logout/">Log_out</a></li>
+<li> <a href="{% url 'message_create' %}"> Send Message </a> </li>
+<li> <a href="{% url 'inbox' %}"> Inbox </a> </li>
+<li> <a href="{% url 'outbox' %}"> Outbox </a> </li>
+<li> <a href="{% url 'my_event' %}"> My Event </a> </li>
+</ul>
+{% else %}
+<ul>
+<li><a href="{% url 'meet' %}">Meet new people</a></li>
+<li><a href="{% url 'experience' %}">Sharing experience</a></li>
 <li><a href="{% url 'cuisine' %}">Learn about new cuisine</a></li>
 <li><a href="{% url 'waste_food' %}">No waste food</a></li>
 <li><a href="{% url 'contact' %}">Contact</a></li>
+<li><a href="/login/">Sign In</a></li>
+<li><a href="/add_user/">Register</a></li>
 </ul>
+{% endif %}
 
 <p>Name: {{custom.username}}</p>
 <p>Surname: {{custom.last_name}}</p>
@@ -46,6 +67,9 @@
 </form>
 <form method="get" action="/pay">
 <button type="submit" class="btn btn-danger">Pay for dinner</button>
+</form>
+<form method="get" action="/events_detail_user/{{custom.id}}">
+<button type="submit" class="btn btn-secondary">List of user Event</button>
 </form>
 </form>
 </div>

@@ -58,12 +58,11 @@ urlpatterns = [
         name="friendship_requests_rejected",
     ),
     url(r'^send_message/',  MessagesSendView.as_view(), name="message_create"),
-    # url(r'send_message_direct/',  MessagesDirectView.as_view(), name="message_direct"),
-
-    path(r'send_message_direct/<int:custom>/', MessagesDirectView.as_view(), name="message_direct"),
+    path(r'send_message_direct/<int:receiver>/', MessagesDirectView.as_view(), name="message_direct"),
     url(r'^event_create/', EventCreate.as_view(),
         name="event_create"),
-    path('event_detail/', MyEventView.as_view(), name="event"),
+    path('my_event_detail/', MyEventView.as_view(), name="my_event"),
     path('event_detail/<int:event>/', EventView.as_view(), name="event_detail"),
+    path('events_detail_user/<int:events_user>/', EventUserView.as_view(), name="events_user"),
 
 ]

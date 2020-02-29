@@ -290,11 +290,11 @@ class MessagesDirectView(View):
             form = MessageDirectForm()
             return render(request, 'send_messages.html', {'form': form})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, receiver):
         form = MessageDirectForm(request.POST)
         if form.is_valid():
-            # custom = CustomUser.objects.filter(id=id)
-            form.save(sender=request.user, receiver=CustomUser.objects.get(receiver=9))  # Fiona
+            receiver = CustomUser.objects.get(pk=receiver)  # Wybieramy usera na ktorego weszlismy
+            form.save(sender=request.user, receiver=receiver)
             return redirect(reverse_lazy('outbox'))
 
 
@@ -332,7 +332,7 @@ class EventCreate(View):
         form = EventCreateForm(request.POST)
         if form.is_valid():
             form.save(owner=request.user)
-        return redirect(reverse_lazy('outbox'))
+        return redirect(reverse_lazy('my_event'))
 
 class MyEventView(View):
     def get(self, request,*args, **kwargs):
@@ -356,3 +356,12 @@ class EventView(View):
 
         }
         return render(request, 'event.html', ctx)
+
+class EventUserView(View):
+    def get(self, request, events_user):
+        events_user = Event.objects.filter(owner=events_user)
+        ctx = {
+            'events_user': events_user,
+
+        }
+        return render(request, 'show_event_user.html', ctx)

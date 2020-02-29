@@ -1,0 +1,12 @@
+    {% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<h1>List of User Event</h1>
+
+
+{% for event in events_user %}
+
+<ol> {{event.owner}} create share cooking meet to {{event.people}} people at {{event.date}} in {{event.place}} {{event.cuisine}} {{event.meal}} {{event.get_cost_display}}   <a href="/event_detail/{{ event.id }}">
+<span class="badge badge-pill badge-primary">More ...</span>
+</a></ol>
+
+{% endfor %}

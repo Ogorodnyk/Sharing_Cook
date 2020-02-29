@@ -25,7 +25,7 @@ body {
 {% for event in events %}
 <ol>
 <a href="/event_detail/{{ event.id }}" class="badge badge-info">
-{{event.owner}}  create event in {{event.place}} to {{event.people}} people
+{{event.owner}}  create event in {{event.place}} to {{event.people}} people {{event.date}}
 </a>
 </ol>
 
